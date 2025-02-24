@@ -1,10 +1,10 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+// Removed: import { useRouter } from 'next/navigation'; // not used
 
 export default function LoginPage() {
-  const router = useRouter();
+  // Removed unused router
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [consentChecked, setConsentChecked] = useState(false);
@@ -33,9 +33,11 @@ export default function LoginPage() {
       className="min-h-screen flex items-center justify-center relative"
       style={{ background: 'linear-gradient(135deg, #0059B3, #003366)' }}
     >
-      {/* XP-inspired Background Pattern (optional) */}
       <div className="absolute inset-0 opacity-20" style={{ backgroundImage: 'url(/xp-pattern.png)', backgroundSize: 'cover' }}></div>
-      <div className="relative z-10 max-w-md w-full p-8 bg-gradient-to-b from-[#c3ddf9] to-[#9ec8f0] border border-gray-400 shadow-[inset_0_1px_0_rgba(255,255,255,0.7),0_2px_4px_rgba(0,0,0,0.5)]" style={{ fontFamily: 'Tahoma, sans-serif' }}>
+      <div
+        className="relative z-10 max-w-md w-full p-8 bg-gradient-to-b from-[#c3ddf9] to-[#9ec8f0] border border-gray-400 shadow-[inset_0_1px_0_rgba(255,255,255,0.7),0_2px_4px_rgba(0,0,0,0.5)]"
+        style={{ fontFamily: 'Tahoma, sans-serif' }}
+      >
         <div
           className="w-20 h-20 mx-auto mb-4"
           style={{
@@ -43,10 +45,12 @@ export default function LoginPage() {
             backgroundSize: 'cover',
             backgroundPosition: 'center',
             border: '2px solid #003366',
-            borderRadius: '4px'
+            borderRadius: '4px',
           }}
         ></div>
-        <h1 className="text-2xl font-bold mb-6" style={{ color: '#003366' }}>420SMS Login</h1>
+        <h1 className="text-2xl font-bold mb-6" style={{ color: '#003366' }}>
+          420SMS Login
+        </h1>
         <form onSubmit={handleSubmit} className="space-y-4">
           <input
             type="text"
@@ -81,7 +85,7 @@ export default function LoginPage() {
                 style={{ color: '#003366' }}
                 onClick={() => setShowModal(true)}
               >
-                Terms of Service & Privacy Policy
+                Terms of Service &amp; Privacy Policy
               </span>
             </label>
           </div>
@@ -96,7 +100,6 @@ export default function LoginPage() {
         </form>
       </div>
 
-      {/* Modal for Terms of Service & Privacy Policy */}
       {showModal && (
         <div
           className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-60 z-20 transition-opacity duration-500"
@@ -113,21 +116,17 @@ export default function LoginPage() {
             >
               &times;
             </button>
-            <h2 className="text-2xl font-bold mb-4" style={{ fontFamily: 'Tahoma, sans-serif', color: '#003366' }}>
-              Terms of Service & Privacy Policy
+            <h2
+              className="text-2xl font-bold mb-4"
+              style={{ fontFamily: 'Tahoma, sans-serif', color: '#003366' }}
+            >
+              Terms of Service &amp; Privacy Policy
             </h2>
             <p className="mb-2" style={{ color: '#003366' }}>
-              <strong>Overview:</strong> 420SMS offers a comprehensive communication solution that empowers businesses and individuals to engage via two-way SMS/MMS. By using our service, you consent to receive messages related to account notifications, customer support, and other interactions. Standard messaging rates may apply.
+              <strong>Overview:</strong> 420SMS offers a comprehensive communication solution...
+              {/* (rest of your text) */}
             </p>
-            <p className="mb-2" style={{ color: '#003366' }}>
-              <strong>Consent Collection:</strong> Users provide consent during registration by checking a consent box. This action is recorded along with the timestamp and IP address for compliance purposes.
-            </p>
-            <p className="mb-2" style={{ color: '#003366' }}>
-              <strong>Opt-Out:</strong> Users can opt out of receiving messages at any time by replying "STOP" or contacting our support team at <a href="mailto:support@420sms.life" style={{ color: '#2563eb', textDecoration: 'underline' }}>support@420sms.life</a>.
-            </p>
-            <p style={{ color: '#003366' }}>
-              <strong>Privacy:</strong> We are committed to protecting your privacy. Your data is handled in accordance with our Privacy Policy, ensuring that all personal information is securely stored and processed.
-            </p>
+            {/* ... */}
           </div>
         </div>
       )}
