@@ -22,13 +22,13 @@ export default function PhoneNumbersAdmin() {
   const [areaCode, setAreaCode] = useState('');
   const [error, setError] = useState('');
 
-  const token = typeof window !== 'undefined' ? localStorage.getItem('token') : '';
+  const token = typeof window !== 'undefined' ? localStorage.getItem('token') || '' : '';
 
   useEffect(() => {
     async function fetchPhoneNumbers() {
       try {
         const res = await fetch('http://localhost:5000/api/numbers', {
-          headers: { Authorization: `Bearer ${token}` },
+          headers: { 'Authorization': `Bearer ${token}` }
         });
         if (!res.ok) throw new Error('Failed to fetch phone numbers');
         const data: PhoneNumber[] = await res.json();
@@ -48,7 +48,7 @@ export default function PhoneNumbersAdmin() {
     async function fetchUsers() {
       try {
         const res = await fetch('http://localhost:5000/api/admin/users', {
-          headers: { Authorization: `Bearer ${token}` },
+          headers: { 'Authorization': `Bearer ${token}` }
         });
         if (!res.ok) throw new Error('Failed to fetch users');
         const data: User[] = await res.json();
@@ -64,17 +64,16 @@ export default function PhoneNumbersAdmin() {
     fetchUsers();
   }, [token]);
 
-  // Example function that returns available numbers, removing `any`.
   const handleRentNumber = async () => {
-    if (!areaCode) return alert('Enter an area code');
+    if (!areaCode) return alert("Enter an area code");
     try {
       const res = await fetch('http://localhost:5000/api/numbers/rent', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
+          'Authorization': `Bearer ${token}`
         },
-        body: JSON.stringify({ areaCode }),
+        body: JSON.stringify({ areaCode })
       });
       if (!res.ok) throw new Error('Failed to rent phone number');
       const newNumber: PhoneNumber = await res.json();
@@ -95,9 +94,9 @@ export default function PhoneNumbersAdmin() {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
+          'Authorization': `Bearer ${token}`
         },
-        body: JSON.stringify({ userId }),
+        body: JSON.stringify({ userId })
       });
       if (!res.ok) throw new Error('Failed to assign phone number');
       const updatedNumber: PhoneNumber = await res.json();
@@ -113,13 +112,10 @@ export default function PhoneNumbersAdmin() {
     }
   };
 
-  if (error) {
-    return <div className="text-red-500">{error}</div>;
-  }
-
   return (
     <div className="max-w-7xl mx-auto p-4">
       <h1 className="text-3xl font-bold mb-4">Phone Number Management</h1>
+      {error && <div className="text-red-500">{error}</div>}
       <div className="mb-4 flex items-center">
         <input
           type="text"
@@ -132,8 +128,26 @@ export default function PhoneNumbersAdmin() {
           Rent Number
         </button>
       </div>
-      {/* Table of phone numbers, assignment, etc. */}
-      {/* ... */}
+      {phoneNumbers.length === 0 ? (
+        <div>No phone numbers found. Rent a new number above.</div>
+      ) : (
+        <ul>
+          {phoneNumbers.map((num) => (
+            <li key={num.id}>
+              {num.number} - {num.status} - Assigned to: {num.assigned_to || 'None'}
+              <select
+                onChange={(e) => handleAssignNumber(num.id, e.target.value)}
+                value={num.assigned_to || ''}
+              >
+                <option value="">Assign to...</option>
+                {users.map((user) => (
+                  <option key={user.id} value={user.id}>{user.username}</option>
+                ))}
+              </select>
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 }

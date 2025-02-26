@@ -1,0 +1,35 @@
+diff --git a/src/app/(admin)/admin/page.tsx b/src/app/(admin)/admin/page.tsx
+index 1234567..2345678 100644
+--- a/src/app/(admin)/admin/page.tsx
+@@
+-  const [error, setError] = useState('');
++  // Removed unused error state
+@@
+-      setIsLoading(true);
+-      setError('');
++      setIsLoading(true);
+       // (Removed unused error handling)
+diff --git a/src/app/(admin)/phone-numbers/page.tsx b/src/app/(admin)/phone-numbers/page.tsx
+index 3456789..4567890 100644
+--- a/src/app/(admin)/phone-numbers/page.tsx
+@@
+-  const token = typeof window !== 'undefined' ? localStorage.getItem('token') : ('' as any);
++  const token = typeof window !== 'undefined' ? localStorage.getItem('token') : '';
+@@
+-      } catch (err: any) {
++      } catch (err: unknown) {
+@@
+-      const newNumber: any = await res.json();
++      const newNumber: PhoneNumber = await res.json();
+@@
+-      const updatedNumber: any = await res.json();
++      const updatedNumber: PhoneNumber = await res.json();
+diff --git a/src/app/dashboard/page.tsx b/src/app/dashboard/page.tsx
+index 5678901..6789012 100644
+--- a/src/app/dashboard/page.tsx
+@@
+-  const [conversations, setConversations] = useState<any[]>([]);
++  const [conversations, setConversations] = useState<Conversation[]>([]);
+@@
+-        setConversations(data);
++        setConversations(data as Conversation[]);
